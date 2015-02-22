@@ -79,15 +79,12 @@ class Callbacks:
     def __init__(self):
         print("Loaded Callbacks")
 
-    # Input Callback
-    def input(self):
-        print("Input")
-
     # Draw Callback
     def draw(self):
         surface.fill((50,0,0))
         engine.fpscounter()
 
+    # Input Callback
     def input(self):
 
         for event in pygame.event.get():
