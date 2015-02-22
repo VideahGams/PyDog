@@ -7,8 +7,10 @@ import sys, os, traceback, random
 title = "PyDog"
 screenSize = 600, 300
 devmode = True
+soundlabels = ["test1", "test2", "test3", "test4"]
 
 # Code
+pygame.mixer.init()
 pygame.display.init()
 pygame.font.init()
 
@@ -20,9 +22,17 @@ font = pygame.font.SysFont('Arial',22)
 
 cache = {}
 
+soundchannel = pygame.mixer.Channel(1)
+
+sounds = [None] * len(soundlabels)
+
+for x in range(0, len(sounds)):
+    sounds[x] = pygame.mixer.Sound('sounds/' + soundlabels[x] + ".wav")
+
 class Engine:
 
     def __init__(self):
+        self.playingSound = False
         print("Loaded Engine Functions")
 
     def getCache(self, msg, aa): #Font cache. Work in Progress.
@@ -46,6 +56,18 @@ class Engine:
         textobj = self.getCache(msg, aa)
         
         surface.blit(textobj, (posx,posy))
+
+    def playSound(self, name):
+        if self.playingSound == False:
+            for x in range(0, len(soundlabels)):
+                if name == soundlabels[x]:
+                        print("Playing sound " + soundlabels[x] + ".wav")
+                        soundchannel.play(sounds[x])
+                        self.playingSound = True
+                        while self.playingSound == True:
+                            if soundchannel.get_busy() == False:
+                                self.playingSound = False
+                        break
 
     def fpscounter(self):
 
@@ -76,6 +98,14 @@ class Callbacks:
                 
                 if event.key == K_ESCAPE: return False
 
+                if event.key == K_LEFT: engine.playSound("test1")
+
+                if event.key == K_UP: engine.playSound("test2")
+
+                if event.key == K_RIGHT: engine.playSound("test3")
+
+                if event.key == K_DOWN: engine.playSound("test4")
+
         return True
 
 engine = Engine()
@@ -92,7 +122,9 @@ def main():
 
         call.draw()
 
-        pygame.display.flip()
+        pygame.display.flip() # Push to Display.
+
+        clock.tick(60)
 
     pygame.quit()
 
