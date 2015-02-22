@@ -5,7 +5,7 @@ import sys, os, traceback, random
 
 # Options
 title = "PyDog"
-screenSize = 600, 300
+screenSize = 320, 240
 devmode = True
 soundlabels = ["test1", "test2", "test3", "test4"]
 
