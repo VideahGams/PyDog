@@ -7,7 +7,8 @@ import sys, os, traceback, random
 title = "PyDog"
 screenSize = 320, 240
 devmode = True
-soundlabels = ["test1", "test2", "test3", "test4"]
+soundlabels = ["ForScience", "Choppah", "Earthling", "Squirrel"]
+imagelabels = ["placekitten.jpg"]
 
 # Code
 pygame.mixer.init()
@@ -25,9 +26,12 @@ cache = {}
 soundchannel = pygame.mixer.Channel(1)
 
 sounds = [None] * len(soundlabels)
+images = [None] * len(imagelabels)
 
 for x in range(0, len(sounds)):
     sounds[x] = pygame.mixer.Sound('sounds/' + soundlabels[x] + ".wav")
+for x in range(0, len(images)):
+    images[x] = pygame.image.load('images/' + imagelabels[x])
 
 class Engine:
 
@@ -57,6 +61,11 @@ class Engine:
         
         surface.blit(textobj, (posx,posy))
 
+    def drawImage(self, image, posx = 0, posy = 0):
+        for x in range(0, len(imagelabels)):
+            if image == imagelabels[x]:
+                surface.blit(images[x], (posx, posy))
+
     def playSound(self, name):
         if self.playingSound == False:
             for x in range(0, len(soundlabels)):
@@ -71,7 +80,7 @@ class Engine:
 
     def fpscounter(self):
 
-        self.drawText("FPS: " + str(round(float(clock.get_fps()) ) ), 0, 0)
+        self.drawText("FPS: " + str(round(clock.get_fps())), 0, 0)
 
 
 class Callbacks:
@@ -82,6 +91,7 @@ class Callbacks:
     # Draw Callback
     def draw(self):
         surface.fill((50,0,0))
+        engine.drawImage("placekitten.jpg")
         engine.fpscounter()
 
     # Input Callback
@@ -95,33 +105,32 @@ class Callbacks:
                 
                 if event.key == K_ESCAPE: return False
 
-                if event.key == K_LEFT: engine.playSound("test1")
+                if event.key == K_LEFT: engine.playSound("Squirrel")
 
-                if event.key == K_UP: engine.playSound("test2")
+                if event.key == K_UP: engine.playSound("Choppah")
 
-                if event.key == K_RIGHT: engine.playSound("test3")
+                if event.key == K_RIGHT: engine.playSound("Earthling")
 
-                if event.key == K_DOWN: engine.playSound("test4")
+                if event.key == K_DOWN: engine.playSound("ForScience")
 
         return True
 
 engine = Engine()
 call = Callbacks()
 
-def main():
+clock = pygame.time.Clock()
 
-    global clock
-    clock = pygame.time.Clock()
+def main():
 
     while True:
 
         if not call.input(): break
 
+        clock.tick(60)
+
         call.draw()
 
         pygame.display.flip() # Push to Display.
-
-        clock.tick(60)
 
     pygame.quit()
 
