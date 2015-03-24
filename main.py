@@ -9,6 +9,7 @@ screenSize = 320, 240
 devmode = True
 soundlabels = ["ForScience", "Choppah", "Earthling", "Squirrel"]
 imagelabels = ["placekitten.jpg"]
+animationfolders = ["testanim"]
 
 # Code
 pygame.mixer.init()
@@ -27,11 +28,18 @@ soundchannel = pygame.mixer.Channel(1)
 
 sounds = [None] * len(soundlabels)
 images = [None] * len(imagelabels)
+animations = [[0 for x in range(60)] for x in range(len(animationfolders))]
 
 for x in range(0, len(sounds)):
     sounds[x] = pygame.mixer.Sound('sounds/' + soundlabels[x] + ".wav")
 for x in range(0, len(images)):
     images[x] = pygame.image.load('images/' + imagelabels[x])
+for x in range(0, len(animationfolders)):
+    path = "images/" + animationfolders[x]
+    num_files = len([f for f in os.listdir(path)
+                if os.path.isfile(os.path.join(path, f))])
+    for y in range(0, num_files - 1):
+        animations[x][y] = pygame.image.load('images/{animfolder}/frame{num}.png'.format(animfolder = animationfolders[x], num = y))
 
 class Engine:
 
@@ -67,21 +75,39 @@ class Engine:
                 surface.blit(images[x], (posx, posy))
 
     def playSound(self, name):
-        if self.playingSound == False:
+        if soundchannel.get_busy() == False:
             for x in range(0, len(soundlabels)):
                 if name == soundlabels[x]:
                         print("Playing sound " + soundlabels[x] + ".wav")
                         soundchannel.play(sounds[x])
                         self.playingSound = True
-                        while self.playingSound == True:
-                            if soundchannel.get_busy() == False:
-                                self.playingSound = False
-                        break
 
     def fpscounter(self):
 
         self.drawText("FPS: " + str(round(clock.get_fps())), 0, 0)
 
+    class Animation:
+
+        def __init__(self, name):
+            for x in range(0, len(animationfolders)):
+                if name == animationfolders[x]:
+                    self.name = animationfolders[x]
+                    self.folderindex = x
+
+            self.animationindex = 0
+
+        def draw(self, posx = 0, posy = 0):
+            surface.blit(animations[self.folderindex][self.animationindex], (posx, posy))
+            self.animationindex += 1
+
+            if self.animationindex == 3:
+                self.animationindex = 0
+
+        def reset(self):
+            self.animationindex = 0
+
+engine = Engine()
+testanim = engine.Animation("testanim")
 
 class Callbacks:
 
@@ -92,6 +118,7 @@ class Callbacks:
     def draw(self):
         surface.fill((50,0,0))
         engine.drawImage("placekitten.jpg")
+        testanim.draw(0, 0)
         engine.fpscounter()
 
     # Input Callback
@@ -115,7 +142,6 @@ class Callbacks:
 
         return True
 
-engine = Engine()
 call = Callbacks()
 
 clock = pygame.time.Clock()
@@ -126,7 +152,7 @@ def main():
 
         if not call.input(): break
 
-        clock.tick(60)
+        clock.tick(30)
 
         call.draw()
 
