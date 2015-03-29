@@ -11,7 +11,7 @@ soundlabels = ["ForScience", "GetToTheChopper", "Earthling", "Squirrel", "Disco"
 imagelabels = ["placekitten.jpg"]
 animationfolders = ["testanim", "idle", "kawaii", "choppa", "squirrel"]
 
-animstate = "kawaii"
+animstate = "idle"
 
 # Code
 pygame.mixer.init()
