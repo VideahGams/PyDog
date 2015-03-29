@@ -7,7 +7,7 @@ import sys, os, traceback, random
 title = "PyDog"
 screenSize = 320, 240
 devmode = True
-soundlabels = ["ForScience", "Choppah", "Earthling", "Squirrel"]
+soundlabels = ["ForScience", "GetToTheChopper", "Earthling", "Squirrel", "Disco"]
 imagelabels = ["placekitten.jpg"]
 animationfolders = ["testanim"]
 
@@ -39,7 +39,7 @@ for x in range(0, len(animationfolders)):
     num_files = len([f for f in os.listdir(path)
                 if os.path.isfile(os.path.join(path, f))])
     for y in range(0, num_files - 1):
-        animations[x][y] = pygame.image.load('images/{animfolder}/frame{num}.png'.format(animfolder = animationfolders[x], num = y))
+        animations[x][y] = pygame.image.load('images/{animfolder}/frame{num}.png'.format(animfolder = animationfolders[x], num = y + 1))
 
 class Engine:
 
@@ -134,11 +134,15 @@ class Callbacks:
 
                 if event.key == K_LEFT: engine.playSound("Squirrel")
 
-                if event.key == K_UP: engine.playSound("Choppah")
+                if event.key == K_UP: engine.playSound("GetToTheChopper")
 
                 if event.key == K_RIGHT: engine.playSound("Earthling")
 
                 if event.key == K_DOWN: engine.playSound("ForScience")
+
+                if event.key == K_RETURN: engine.playSound("Disco")
+
+                if event.key == K_s: pygame.mixer.stop()
 
         return True
 
