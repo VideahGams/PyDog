@@ -5,11 +5,13 @@ import sys, os, traceback, random
 
 # Options
 title = "PyDog"
-screenSize = 320, 240
+screenSize = 480, 360
 devmode = True
 soundlabels = ["ForScience", "GetToTheChopper", "Earthling", "Squirrel", "Disco"]
 imagelabels = ["placekitten.jpg"]
-animationfolders = ["testanim"]
+animationfolders = ["testanim", "idle", "kawaii", "choppa", "squirrel"]
+
+animstate = "kawaii"
 
 # Code
 pygame.mixer.init()
@@ -28,7 +30,7 @@ soundchannel = pygame.mixer.Channel(1)
 
 sounds = [None] * len(soundlabels)
 images = [None] * len(imagelabels)
-animations = [[0 for x in range(60)] for x in range(len(animationfolders))]
+animations = [[0 for x in range(120)] for x in range(len(animationfolders))]
 
 for x in range(0, len(sounds)):
     sounds[x] = pygame.mixer.Sound('sounds/' + soundlabels[x] + ".wav")
@@ -39,7 +41,28 @@ for x in range(0, len(animationfolders)):
     num_files = len([f for f in os.listdir(path)
                 if os.path.isfile(os.path.join(path, f))])
     for y in range(0, num_files - 1):
-        animations[x][y] = pygame.image.load('images/{animfolder}/frame{num}.png'.format(animfolder = animationfolders[x], num = y + 1))
+        print("Loaded animation frame for '" + animationfolders[x] + "': " + str((y + 1)))
+        framenumlength = len(str(y + 1))
+        multiplytimes = 4 - framenumlength
+        numofzeros = '0'*multiplytimes
+        
+        animations[x][y] = pygame.image.load('images/{animfolder}/frame{num}.png'.format(animfolder = animationfolders[x], num = numofzeros + str(y + 1)))
+
+def changeAnim(anim):
+
+    global animstate
+
+    if animstate == "idle":
+        idle.reset()
+    elif animstate == "kawaii":
+        kawaii.reset()
+    elif animstate == "choppa":
+        choppa.reset()
+    elif animstate == "squirrel":
+        squirrel.reset()
+    
+    animstate = anim
+
 
 class Engine:
 
@@ -97,17 +120,30 @@ class Engine:
             self.animationindex = 0
 
         def draw(self, posx = 0, posy = 0):
+
+            global animstate
+            
             surface.blit(animations[self.folderindex][self.animationindex], (posx, posy))
             self.animationindex += 1
 
-            if self.animationindex == 3:
+            path = "images/" + animationfolders[self.folderindex]
+            num_files = len([f for f in os.listdir(path)
+                        if os.path.isfile(os.path.join(path, f))])
+
+            if self.animationindex == num_files - 1:
+                changeAnim("idle")
                 self.animationindex = 0
 
         def reset(self):
             self.animationindex = 0
 
 engine = Engine()
+
 testanim = engine.Animation("testanim")
+idle = engine.Animation("idle")
+kawaii = engine.Animation("kawaii")
+choppa = engine.Animation("choppa")
+squirrel = engine.Animation("squirrel")
 
 class Callbacks:
 
@@ -117,12 +153,28 @@ class Callbacks:
     # Draw Callback
     def draw(self):
         surface.fill((50,0,0))
-        engine.drawImage("placekitten.jpg")
-        testanim.draw(0, 0)
+        #engine.drawImage("placekitten.jpg")
+        #testanim.draw(0, 0)
+        #idle.draw(0, 0)
+        #kawaii.draw(0, 0)
+        #choppa.draw(0, 0)
+        #squirrel.draw(0, 0)
+
+        if animstate == "idle":
+            idle.draw(0, 0)
+        elif animstate == "kawaii":
+            kawaii.draw(0, 0)
+        elif animstate == "choppa":
+            choppa.draw(0, 0)
+        elif animstate == "squirrel":
+            squirrel.draw(0, 0)
+        
         engine.fpscounter()
 
     # Input Callback
     def input(self):
+
+        global animstate
 
         for event in pygame.event.get():
         
@@ -132,11 +184,17 @@ class Callbacks:
                 
                 if event.key == K_ESCAPE: return False
 
-                if event.key == K_LEFT: engine.playSound("Squirrel")
+                if event.key == K_LEFT:
+                    changeAnim("squirrel")
+                    engine.playSound("Squirrel")
 
-                if event.key == K_UP: engine.playSound("GetToTheChopper")
+                if event.key == K_UP:
+                    changeAnim("choppa")
+                    engine.playSound("GetToTheChopper")
 
-                if event.key == K_RIGHT: engine.playSound("Earthling")
+                if event.key == K_RIGHT:
+                    changeAnim("kawaii")
+                    engine.playSound("Earthling")
 
                 if event.key == K_DOWN: engine.playSound("ForScience")
 
@@ -151,6 +209,8 @@ call = Callbacks()
 clock = pygame.time.Clock()
 
 def main():
+
+    global animstate
 
     while True:
 
