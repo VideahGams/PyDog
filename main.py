@@ -9,7 +9,7 @@ screenSize = 480, 360
 devmode = True
 soundlabels = ["ForScience", "GetToTheChopper", "Earthling", "Squirrel", "Disco"]
 imagelabels = ["placekitten.jpg"]
-animationfolders = ["testanim", "idle", "kawaii", "choppa", "squirrel"]
+animationfolders = ["idle", "kawaii", "choppa", "squirrel", "science"]
 
 animstate = "idle"
 
@@ -60,6 +60,8 @@ def changeAnim(anim):
         choppa.reset()
     elif animstate == "squirrel":
         squirrel.reset()
+    elif animstate == "science":
+        science.reset()
     
     animstate = anim
 
@@ -139,11 +141,12 @@ class Engine:
 
 engine = Engine()
 
-testanim = engine.Animation("testanim")
+#testanim = engine.Animation("testanim")
 idle = engine.Animation("idle")
 kawaii = engine.Animation("kawaii")
 choppa = engine.Animation("choppa")
 squirrel = engine.Animation("squirrel")
+science = engine.Animation("science")
 
 class Callbacks:
 
@@ -168,6 +171,8 @@ class Callbacks:
             choppa.draw(0, 0)
         elif animstate == "squirrel":
             squirrel.draw(0, 0)
+        elif animstate == "science":
+            science.draw(0, 0)
         
         engine.fpscounter()
 
@@ -196,7 +201,9 @@ class Callbacks:
                     changeAnim("kawaii")
                     engine.playSound("Earthling")
 
-                if event.key == K_DOWN: engine.playSound("ForScience")
+                if event.key == K_DOWN:
+                    changeAnim("science")
+                    engine.playSound("ForScience")
 
                 if event.key == K_RETURN: engine.playSound("Disco")
 
