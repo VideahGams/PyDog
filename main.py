@@ -47,6 +47,7 @@ for x in range(0, len(animationfolders)):
         numofzeros = '0'*multiplytimes
         
         animations[x][y] = pygame.image.load('images/{animfolder}/frame{num}.png'.format(animfolder = animationfolders[x], num = numofzeros + str(y + 1)))
+        animations[x][y] = animations[x][y].convert_alpha()
 
 def changeAnim(anim):
 
