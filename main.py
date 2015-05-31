@@ -40,6 +40,8 @@ animations = [[0 for x in xrange(120)] for x in xrange(len(animationfolders))]
 
 syncSuccess = False
 syncscreen = pygame.image.load(u'images/syncscreen.png')
+remote = None
+
 
 def trySync():
 
@@ -47,15 +49,15 @@ def trySync():
 	pygame.display.flip()
 	time.sleep(3)
 	remote = cwiid.Wiimote()
-	syncSuccess = True
+	
+	if remote != None:
+		syncSuccess = True
 
 while syncSuccess == False:
 	try:
 		trySync()
 	except RuntimeError:
 		print u"Can't find wiimote, trying again..."
-
-pygame.quit()
 
 for x in xrange(0, len(sounds)):
 	sounds[x] = pygame.mixer.Sound(u'sounds/' + soundlabels[x] + u".wav")
