@@ -4,13 +4,44 @@ from pygame.locals import *
 import sys, os, traceback, random, time
 import cwiid
 
+# Options
+
+title = u"PyDog"
+screenSize = 656, 416
+devmode = True
+soundlabels = [u"ForScience", u"GetToTheChopper", u"Earthling", u"Squirrel", u"Disco"]
+imagelabels = [u"placekitten.jpg"]
+animationfolders = [u"idle", u"kawaii", u"choppa", u"squirrel", u"science"]
+
+animstate = u"idle"
+
+# Setup Display
+
+pygame.mixer.init()
+pygame.display.init()
+pygame.font.init()
+
+surface = pygame.display.set_mode(screenSize)
+
+pygame.display.set_caption(title)
+
+font = pygame.font.SysFont(u'Arial',22)
+
+cache = {}
+
+soundchannel = pygame.mixer.Channel(1)
+
+sounds = [None] * len(soundlabels)
+images = [None] * len(imagelabels)
+animations = [[0 for x in xrange(120)] for x in xrange(len(animationfolders))]
+
 # Remote Connection Screen
 
 syncSuccess = False
 syncscreen = pygame.image.load(u'images/syncscreen.png')
 
 def trySync():
-	
+
 	surface.blit(syncscreen, (0, 0))
 	pygame.display.flip()
 	time.sleep(3)
@@ -24,35 +55,6 @@ except RuntimeError:
 	trySync()
 
 if syncSuccess == True:
-
-	# Options
-	title = u"PyDog"
-	screenSize = 656, 416
-	devmode = True
-	soundlabels = [u"ForScience", u"GetToTheChopper", u"Earthling", u"Squirrel", u"Disco"]
-	imagelabels = [u"placekitten.jpg"]
-	animationfolders = [u"idle", u"kawaii", u"choppa", u"squirrel", u"science"]
-
-	animstate = u"idle"
-
-	# Code
-	pygame.mixer.init()
-	pygame.display.init()
-	pygame.font.init()
-
-	surface = pygame.display.set_mode(screenSize)
-
-	pygame.display.set_caption(title)
-
-	font = pygame.font.SysFont(u'Arial',22)
-
-	cache = {}
-
-	soundchannel = pygame.mixer.Channel(1)
-
-	sounds = [None] * len(soundlabels)
-	images = [None] * len(imagelabels)
-	animations = [[0 for x in xrange(120)] for x in xrange(len(animationfolders))]
 
 	for x in xrange(0, len(sounds)):
 		sounds[x] = pygame.mixer.Sound(u'sounds/' + soundlabels[x] + u".wav")
