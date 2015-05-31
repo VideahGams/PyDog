@@ -42,22 +42,19 @@ syncSuccess = False
 syncscreen = pygame.image.load(u'images/syncscreen.png')
 remote = None
 
-
-def trySync():
-
-	surface.blit(syncscreen, (0, 0))
-	pygame.display.flip()
-	time.sleep(3)
-	remote = cwiid.Wiimote()
-	
-	if remote != None:
-		syncSuccess = True
-
-while syncSuccess == False:
+attempts = 1
+while not remote:
 	try:
-		trySync()
-	except RuntimeError:
-		print u"Can't find wiimote, trying again..."
+		remote = cwiid.Wiimote()
+	except RunTimeError:
+		if (attempts>20):
+			pygame.quit()
+			break
+		print u'Error connecting to Wii Remote...'
+		print u'Trying again (Attempt ' + str(attempts) + ')'
+		attempts += 1
+
+remote.led = 1
 
 for x in xrange(0, len(sounds)):
 	sounds[x] = pygame.mixer.Sound(u'sounds/' + soundlabels[x] + u".wav")
@@ -253,7 +250,7 @@ def main():
 
 	while True:
 
-		if syncSuccess == True
+		if remote:
 
 			if not call.input(): break
 
