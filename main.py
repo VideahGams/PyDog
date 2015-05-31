@@ -5,7 +5,7 @@ import sys, os, traceback, random
 
 # Options
 title = "PyDog"
-screenSize = 480, 360
+screenSize = 656, 416
 devmode = True
 soundlabels = ["ForScience", "GetToTheChopper", "Earthling", "Squirrel", "Disco"]
 imagelabels = ["placekitten.jpg"]
@@ -156,6 +156,9 @@ class Callbacks:
 
     # Draw Callback
     def draw(self):
+        offsetx =  75
+        offsety = 0
+
         surface.fill((50,0,0))
         #engine.drawImage("placekitten.jpg")
         #testanim.draw(0, 0)
@@ -165,15 +168,15 @@ class Callbacks:
         #squirrel.draw(0, 0)
 
         if animstate == "idle":
-            idle.draw(0, 0)
+            idle.draw(offsetx,offsety)
         elif animstate == "kawaii":
-            kawaii.draw(0, 0)
+            kawaii.draw(offsetx, offsety)
         elif animstate == "choppa":
-            choppa.draw(0, 0)
+            choppa.draw(offsetx, offsety)
         elif animstate == "squirrel":
-            squirrel.draw(0, 0)
+            squirrel.draw(offsetx, offsety)
         elif animstate == "science":
-            science.draw(0, 0)
+            science.draw(offsetx, offsety)
         
         engine.fpscounter()
 
