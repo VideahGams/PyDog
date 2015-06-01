@@ -33,7 +33,7 @@ cache = {}
 soundchannel = pygame.mixer.Channel(1)
 
 sounds = [None] * len(soundlabels)
-images = [None] * len(imagelabels)\
+images = [None] * len(imagelabels)
 animations = [[0 for x in xrange(120)] for x in xrange(len(animationfolders))]
 loadscreen = pygame.image.load(u'images/loading.png')
 
@@ -60,6 +60,8 @@ while not remote:
 		attempts += 1
 
 remote.led = 1
+remote.rpt_mode = cwiid.RPT_BTN
+remotebuttons = remote.state['buttons']
 
 surface.blit(loadscreen, (0, 0))
 pygame.display.flip()
@@ -217,11 +219,33 @@ class Callbacks(object):
 
 		global animstate
 
+		if (remotebuttons & cwiid.BTN_LEFT):
+			changeAnim(u"squirrel")
+			engine.playSound("Squirrel")
+
+		if (remotebuttons & cwiid.BTN_UP):
+			changeAnim(u"choppa")
+			engine.playSound(u"GetToTheChopper")
+
+		if (remotebuttons & cwiid.BTN_RIGHT):
+			changeAnim(u"kawaii")
+			engine.playSound(u"Earthling")
+
+		if (remotebuttons & cwiid.BTN_DOWN):
+			changeAnim(u"science")
+			engine.playSound(u"ForScience")
+
+		if (remotebuttons - cwiid.BTN_PLUS - cwiid.BTN_MINUS == 0):
+			engine.playSound(u"Disco")
+
+		if (remotebuttons - cwiid.BTN_A - cwiid.BTN_B == 0):
+			pygame.mixer.stop()
+
 		for event in pygame.event.get():
 		
 			if event.type == QUIT: return False
 			
-			elif event.type == KEYDOWN:
+			elif event.type == KEYDOWN or :
 				
 				if event.key == K_ESCAPE: return False
 
