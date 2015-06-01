@@ -61,7 +61,6 @@ while not remote:
 
 remote.led = 1
 remote.rpt_mode = cwiid.RPT_BTN
-remotebuttons = remote.state['buttons']
 
 surface.blit(loadscreen, (0, 0))
 pygame.display.flip()
@@ -218,7 +217,9 @@ class Callbacks(object):
 	def input(self):
 
 		global animstate
-		global remotebuttons
+		global remote
+
+		remotebuttons = remote.state['buttons']
 
 		if (remotebuttons & cwiid.BTN_LEFT):
 			changeAnim(u"squirrel")
