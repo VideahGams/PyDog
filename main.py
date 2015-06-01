@@ -22,7 +22,7 @@ pygame.mixer.init()
 pygame.display.init()
 pygame.font.init()
 
-surface = pygame.display.set_mode(screenSize, pygame.FULLSCREEN & pygame.HWSURFACE)
+surface = pygame.display.set_mode(screenSize, pygame.FULLSCREEN | pygame.HWSURFACE)
 
 pygame.display.set_caption(title)
 
