@@ -33,20 +33,25 @@ cache = {}
 soundchannel = pygame.mixer.Channel(1)
 
 sounds = [None] * len(soundlabels)
-images = [None] * len(imagelabels)
+images = [None] * len(imagelabels)\
 animations = [[0 for x in xrange(120)] for x in xrange(len(animationfolders))]
+loadscreen = pygame.image.load(u'images/loading.png')
+
 
 # Remote Connection Screen
 
 syncSuccess = False
 syncscreen = pygame.image.load(u'images/syncscreen.png')
+surface.blit(syncscreen, (0, 0))
+pygame.display.flip()
+
 remote = None
 
 attempts = 1
 while not remote:
 	try:
 		remote = cwiid.Wiimote()
-	except RunTimeError:
+	except RuntimeError:
 		if (attempts>20):
 			pygame.quit()
 			break
@@ -55,6 +60,9 @@ while not remote:
 		attempts += 1
 
 remote.led = 1
+
+surface.blit(loadscreen, (0, 0))
+pygame.display.flip()
 
 for x in xrange(0, len(sounds)):
 	sounds[x] = pygame.mixer.Sound(u'sounds/' + soundlabels[x] + u".wav")
