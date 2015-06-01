@@ -218,6 +218,7 @@ class Callbacks(object):
 	def input(self):
 
 		global animstate
+		global remotebuttons
 
 		if (remotebuttons & cwiid.BTN_LEFT):
 			changeAnim(u"squirrel")
