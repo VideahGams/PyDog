@@ -33,7 +33,7 @@ cache = {}
 soundchannel = pygame.mixer.Channel(1)
 
 sounds = [None] * len(soundlabels)
-images = [None] * len(imagelabels)\
+images = [None] * len(imagelabels)
 animations = [[0 for x in xrange(120)] for x in xrange(len(animationfolders))]
 loadscreen = pygame.image.load(u'images/loading.png')
 
