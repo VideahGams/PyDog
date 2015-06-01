@@ -246,7 +246,7 @@ class Callbacks(object):
 		
 			if event.type == QUIT: return False
 			
-			elif event.type == KEYDOWN or :
+			elif event.type == KEYDOWN:
 				
 				if event.key == K_ESCAPE: return False
 
