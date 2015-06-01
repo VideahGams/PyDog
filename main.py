@@ -140,7 +140,6 @@ class Engine(object):
 						self.playingSound = True
 
 	def fpscounter(self):
-
 		self.drawText(u"FPS: " + unicode(round(clock.get_fps())), 0, 0)
 
 	class Animation(object):
@@ -173,7 +172,6 @@ class Engine(object):
 
 engine = Engine()
 
-#testanim = engine.Animation("testanim")
 idle = engine.Animation(u"idle")
 kawaii = engine.Animation(u"kawaii")
 choppa = engine.Animation(u"choppa")
@@ -191,12 +189,6 @@ class Callbacks(object):
 		offsety = 0
 
 		surface.fill((50,0,0))
-		#engine.drawImage("placekitten.jpg")
-		#testanim.draw(0, 0)
-		#idle.draw(0, 0)
-		#kawaii.draw(0, 0)
-		#choppa.draw(0, 0)
-		#squirrel.draw(0, 0)
 
 		if animstate == u"idle":
 			idle.draw(offsetx,offsety)
@@ -208,8 +200,6 @@ class Callbacks(object):
 			squirrel.draw(offsetx, offsety)
 		elif animstate == u"science":
 			science.draw(offsetx, offsety)
-		
-		engine.fpscounter()
 
 	# Input Callback
 	def input(self):
