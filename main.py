@@ -9,7 +9,7 @@ import cwiid
 
 title = u"PyDog"
 screenSize = 656, 416
-devmode = True
+devmode = False
 soundlabels = [u"ForScience", u"GetToTheChopper", u"Earthling", u"Squirrel", u"Disco"]
 imagelabels = [u"placekitten.jpg"]
 animationfolders = [u"idle", u"kawaii", u"choppa", u"squirrel", u"science"]
@@ -22,7 +22,7 @@ pygame.mixer.init()
 pygame.display.init()
 pygame.font.init()
 
-surface = pygame.display.set_mode(screenSize)
+surface = pygame.display.set_mode(screenSize, pygame.FULLSCREEN & pygame.HWSURFACE)
 
 pygame.display.set_caption(title)
 
@@ -37,6 +37,7 @@ images = [None] * len(imagelabels)
 animations = [[0 for x in xrange(120)] for x in xrange(len(animationfolders))]
 loadscreen = pygame.image.load(u'images/loading.png')
 
+pygame.mouse.set_visible(False)
 
 # Remote Connection Screen
 
@@ -52,9 +53,6 @@ while not remote:
 	try:
 		remote = cwiid.Wiimote()
 	except RuntimeError:
-		if (attempts>20):
-			pygame.quit()
-			break
 		print u'Error connecting to Wii Remote...'
 		print u'Trying again (Attempt ' + str(attempts) + ')'
 		attempts += 1
